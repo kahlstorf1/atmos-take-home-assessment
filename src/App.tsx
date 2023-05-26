@@ -4,6 +4,7 @@ import questions from './questions.json'
 import Button from './components/Button'
 import Question from './components/Question'
 import ProgressBar from './components/ProgressBar'
+import debounceHook from '../hooks/debounceHook'
 import { toTitleCase } from './utils'
 import { Question as QuestionType } from './types'
 
@@ -23,14 +24,14 @@ function App() {
     setModal(newModal)
   }
 
-  const save = () => {
+  const save = debounceHook(() => {
     if (Object.keys(data).length > 0) {
       setStatus({ ...status, state: 'working' })
       setTimeout(() => {
         setStatus({ state: 'saved', lastSaved: new Date() })
       }, 1000)
     }
-  }
+  }, 500)
 
   useEffect(() => {
     save()
