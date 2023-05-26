@@ -1,7 +1,10 @@
 import { vi } from 'vitest'
 
 import Question from '../components/Question'
-import { render, screen } from './testing-lib'
+import {
+  render, screen, renderHook, act,
+} from './testing-lib'
+import debounceHook from '../../hooks/debounceHook'
 
 const question = {
   id: 1,
@@ -33,5 +36,28 @@ describe('Question', () => {
   it('renders the correct field', () => {
     render(<Question question={question} onChange={vi.fn()} />)
     expect(screen.getByRole('textbox')).toBeInTheDocument()
+  })
+})
+
+vi.useFakeTimers()
+
+describe('Debouncing', () => {
+  it('should debounce save function', () => {
+    const func = vi.fn()
+    const { result } = renderHook(() => debounceHook(func, 500))
+
+    act(() => {
+      result.current()
+      result.current()
+      result.current()
+    })
+
+    expect(func).not.toBeCalled()
+
+    act(() => {
+      vi.runAllTimers()
+    })
+    expect(func).toBeCalled()
+    expect(func).toHaveBeenCalledTimes(1)
   })
 })
