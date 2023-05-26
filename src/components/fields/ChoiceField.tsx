@@ -18,6 +18,7 @@ function ChoiceField({
       { choices.map((choice) => (
         <button
           type="button"
+          data-testId='choicefield'
           name={name}
           key={nanoid()}
           className={classNames(

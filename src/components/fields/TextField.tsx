@@ -17,6 +17,7 @@ function TextField({ name, initialValue, onChange }: TextFieldProps) {
       type="text"
       name={name}
       className="block w-full rounded-lg border-2 border-gray-300 py-2 px-3 focus:outline-none"
+      data-testId='textfield'
       value={value}
       onChange={handleChange}
     />
