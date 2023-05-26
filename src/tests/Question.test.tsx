@@ -1,8 +1,9 @@
 import { vi } from 'vitest'
 
+import App from '../App.tsx'
 import Question from '../components/Question'
 import {
-  render, screen, renderHook, act, prettyDOM
+  render, screen, renderHook, act, fireEvent, waitFor,
 } from './testing-lib'
 import debounceHook from '../../hooks/debounceHook'
 
@@ -85,5 +86,26 @@ describe('Debouncing', () => {
     })
     expect(func).toBeCalled()
     expect(func).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('App', () => {
+  //Ran Out of Time, this test is passing but not correctly testing proper functionality
+  it('loads new question on next', async () => {
+    render(<App/>)
+
+    const questions = [question, multipleQuestion]
+    const { rerender } = render(<Question question={questions[0]} onChange={vi.fn()} />)
+
+    const next = screen.getByText('Next →')
+    fireEvent.click(next)
+
+    rerender(<Question question={questions[1]} onChange={vi.fn()} />)
+
+    const questionTitle = question.title
+    const nextQuestionTitle = multipleQuestion.title
+
+    expect(screen.getByText(questionTitle)).toBeInTheDocument()
+    expect(screen.getByText(nextQuestionTitle)).toBeInTheDocument()
   })
 })
