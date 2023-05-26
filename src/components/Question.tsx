@@ -25,6 +25,19 @@ function Question({
             choices={question.choices as string[]}
           />
         )
+      case 'multiple':
+        return (
+          <>
+            <TextField name={question.id.toString()} onChange={onChange} />
+            <NumberField name={question.id.toString()} onChange={onChange} />
+            <BooleanField name={question.id.toString()} onChange={onChange} />
+            <ChoiceField
+              name={question.id.toString()}
+              onChange={onChange}
+              choices={question.choices as string[]}
+            />
+          </>
+        )
       default:
         return null
     }
